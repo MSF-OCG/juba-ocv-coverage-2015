@@ -1,0 +1,505 @@
+<?xml version="1.0"?>
+<h:html xmlns="http://www.w3.org/2002/xforms" xmlns:ev="http://www.w3.org/2001/xml-events" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:jr="http://openrosa.org/javarosa" xmlns:orx="http://openrosa.org/xforms" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <h:head>
+    <h:title>Coverage_survey</h:title>
+    <model>
+      <itext>
+        <translation default="true()" lang="english">
+          <text id="/coverage_survey/hh_member/has_vac_card:label">
+            <value form="image">jr://images/vacci_card.jpg</value>
+            <value>B4. Verified by vaccination card?</value>
+          </text>
+          <text id="/coverage_survey/vacci_exp/vac_understood:label">
+            <value form="image">jr://images/ocv8.jpg</value>
+            <value>Ask the participant if they had heard about this campaign and if they have any questions</value>
+          </text>
+        </translation>
+      </itext>
+      <instance>
+        <coverage_survey id="V2.0">
+          <EN_start_time/>
+          <EN_end_time/>
+          <EN_today/>
+          <EN_imei/>
+          <EN_deviceid/>
+          <basics>
+            <interviewer_team_id/>
+            <date_of_ques>${EN_today}</date_of_ques>
+            <vacci_zone/>
+            <village_vacci_zone1/>
+            <village_vacci_zone1_other/>
+            <village_vacci_zone2/>
+            <village_vacci_zone2_other/>
+            <village_vacci_zone3/>
+            <village_vacci_zone3_other/>
+            <hh_id/>
+            <num_hh_members/>
+            <num_toukul/>
+          </basics>
+          <vacci_exp>
+            <vac_explain1/>
+            <vac_explain2/>
+            <vac_understood/>
+            <household_enumeration/>
+          </vacci_exp>
+          <hh_member jr:template="">
+            <hh_idcalc/>
+            <age_yrs/>
+            <sex/>
+            <ocv_in_2015/>
+            <has_vac_card/>
+            <spit_dose/>
+            <adverse/>
+            <adverse_type/>
+            <adverse_hf/>
+            <reason_novx/>
+          </hh_member>
+          <note_end/>
+          <visit_comments/>
+          <gps/>
+          <meta>
+            <instanceID/>
+            <instanceName/>
+          </meta>
+        </coverage_survey>
+      </instance>
+      <bind jr:preload="timestamp" jr:preloadParams="start" nodeset="/coverage_survey/EN_start_time" type="dateTime"/>
+      <bind jr:preload="timestamp" jr:preloadParams="end" nodeset="/coverage_survey/EN_end_time" type="dateTime"/>
+      <bind jr:preload="date" jr:preloadParams="today" nodeset="/coverage_survey/EN_today" type="date"/>
+      <bind jr:preload="property" jr:preloadParams="deviceid" nodeset="/coverage_survey/EN_imei" type="string"/>
+      <bind jr:preload="property" jr:preloadParams="deviceid" nodeset="/coverage_survey/EN_deviceid" type="string"/>
+      <bind calculate="field-list" nodeset="/coverage_survey/basics"/>
+      <bind nodeset="/coverage_survey/basics/interviewer_team_id" required="true()" type="select1"/>
+      <bind nodeset="/coverage_survey/basics/date_of_ques" required="true()" type="date"/>
+      <bind nodeset="/coverage_survey/basics/vacci_zone" required="true()" type="select1"/>
+      <bind nodeset="/coverage_survey/basics/village_vacci_zone1" relevant=" /coverage_survey/basics/vacci_zone =1" required="true()" type="select1"/>
+      <bind nodeset="/coverage_survey/basics/village_vacci_zone1_other" relevant="selected(../village_vacci_zone1, 'other')" type="string"/>
+      <bind nodeset="/coverage_survey/basics/village_vacci_zone2" relevant=" /coverage_survey/basics/vacci_zone =2" required="true()" type="select1"/>
+      <bind nodeset="/coverage_survey/basics/village_vacci_zone2_other" relevant="selected(../village_vacci_zone2, 'other')" type="string"/>
+      <bind nodeset="/coverage_survey/basics/village_vacci_zone3" relevant=" /coverage_survey/basics/vacci_zone =3" required="true()" type="select1"/>
+      <bind nodeset="/coverage_survey/basics/village_vacci_zone3_other" relevant="selected(../village_vacci_zone3, 'other')" type="string"/>
+      <bind nodeset="/coverage_survey/basics/hh_id" required="true()" type="int"/>
+      <bind nodeset="/coverage_survey/basics/num_hh_members" required="true()" type="int"/>
+      <bind nodeset="/coverage_survey/basics/num_toukul" type="int"/>
+      <bind nodeset="/coverage_survey/vacci_exp/vac_explain1" readonly="true()" type="string"/>
+      <bind nodeset="/coverage_survey/vacci_exp/vac_explain2" readonly="true()" type="string"/>
+      <bind nodeset="/coverage_survey/vacci_exp/vac_understood" required="true()" type="string"/>
+      <bind nodeset="/coverage_survey/vacci_exp/household_enumeration" readonly="true()" type="string"/>
+      <bind calculate=" /coverage_survey/basics/hh_id " nodeset="/coverage_survey/hh_member/hh_idcalc" type="string"/>
+      <bind constraint=".&lt;120" jr:constraintMsg="Sorry, this is a very high number and unlikley to be a real age" nodeset="/coverage_survey/hh_member/age_yrs" required="true()" type="decimal"/>
+      <bind nodeset="/coverage_survey/hh_member/sex" required="true()" type="select1"/>
+      <bind constraint=" /coverage_survey/hh_member/age_yrs &gt;=1" jr:constraintMsg="Sorry this person is under 1 year old. Are you sure he/she took the cholera vaccination?" nodeset="/coverage_survey/hh_member/ocv_in_2015" required="true()" type="select1"/>
+      <bind nodeset="/coverage_survey/hh_member/has_vac_card" relevant=" /coverage_survey/hh_member/ocv_in_2015 =1" required="true()" type="select1"/>
+      <bind nodeset="/coverage_survey/hh_member/spit_dose" relevant=" /coverage_survey/hh_member/ocv_in_2015 =1" type="select1"/>
+      <bind nodeset="/coverage_survey/hh_member/adverse" relevant=" /coverage_survey/hh_member/ocv_in_2015 =1" type="select1"/>
+      <bind nodeset="/coverage_survey/hh_member/adverse_type" relevant=" /coverage_survey/hh_member/adverse =1" type="select"/>
+      <bind nodeset="/coverage_survey/hh_member/adverse_hf" relevant=" /coverage_survey/hh_member/adverse =1" type="select1"/>
+      <bind nodeset="/coverage_survey/hh_member/reason_novx" relevant=" /coverage_survey/hh_member/ocv_in_2015 =2" required="true()" type="select1"/>
+      <bind nodeset="/coverage_survey/note_end" readonly="true()" type="string"/>
+      <bind nodeset="/coverage_survey/visit_comments" type="string"/>
+      <bind nodeset="/coverage_survey/gps" type="geopoint"/>
+      <bind calculate="concat('uuid:', uuid())" nodeset="/coverage_survey/meta/instanceID" readonly="true()" type="string"/>
+      <bind calculate="concat('Coverage_survey: ', /coverage_survey/basics/hh_id )" nodeset="/coverage_survey/meta/instanceName" type="string"/>
+    </model>
+  </h:head>
+  <h:body>
+    <group ref="/coverage_survey/basics">
+      <label>A. Household</label>
+      <select1 ref="/coverage_survey/basics/interviewer_team_id">
+        <label>A1. Interviewer team ID</label>
+        <item>
+          <label>team 1</label>
+          <value>1</value>
+        </item>
+        <item>
+          <label>team 2</label>
+          <value>2</value>
+        </item>
+        <item>
+          <label>team 3</label>
+          <value>3</value>
+        </item>
+        <item>
+          <label>team 4</label>
+          <value>4</value>
+        </item>
+        <item>
+          <label>team 5</label>
+          <value>5</value>
+        </item>
+        <item>
+          <label>team 6</label>
+          <value>6</value>
+        </item>
+        <item>
+          <label>team 7</label>
+          <value>7</value>
+        </item>
+        <item>
+          <label>team 8</label>
+          <value>8</value>
+        </item>
+      </select1>
+      <input ref="/coverage_survey/basics/date_of_ques">
+        <label>A2. What is today's date?</label>
+        <hint>if today's date is highlighted, just swipe to the next screen</hint>
+      </input>
+      <select1 ref="/coverage_survey/basics/vacci_zone">
+        <label>A3. Where is the household located?</label>
+        <item>
+          <label>Kator</label>
+          <value>1</value>
+        </item>
+        <item>
+          <label>Northern Bari</label>
+          <value>2</value>
+        </item>
+        <item>
+          <label>Rejaf - Gumbo</label>
+          <value>3</value>
+        </item>
+      </select1>
+      <select1 ref="/coverage_survey/basics/village_vacci_zone1">
+        <label>A4. Name of the village/block</label>
+        <item>
+          <label>Atlabara A</label>
+          <value>1</value>
+        </item>
+        <item>
+          <label>Atlabara B</label>
+          <value>2</value>
+        </item>
+        <item>
+          <label>Atlabara C</label>
+          <value>3</value>
+        </item>
+        <item>
+          <label>Kator East</label>
+          <value>6</value>
+        </item>
+        <item>
+          <label>Kator South</label>
+          <value>7</value>
+        </item>
+        <item>
+          <label>Kator West</label>
+          <value>8</value>
+        </item>
+        <item>
+          <label>Khor Williams</label>
+          <value>9</value>
+        </item>
+        <item>
+          <label>Lologo 1</label>
+          <value>10</value>
+        </item>
+        <item>
+          <label>Malakia</label>
+          <value>11</value>
+        </item>
+        <item>
+          <label>Other</label>
+          <value>other</value>
+        </item>
+      </select1>
+      <input ref="/coverage_survey/basics/village_vacci_zone1_other">
+        <label>Specify other.</label>
+      </input>
+      <select1 ref="/coverage_survey/basics/village_vacci_zone2">
+        <label>A4. Name of the village/block</label>
+        <item>
+          <label>Mangatain 1</label>
+          <value>1</value>
+        </item>
+        <item>
+          <label>Mangatain 2</label>
+          <value>2</value>
+        </item>
+        <item>
+          <label>New Site</label>
+          <value>3</value>
+        </item>
+        <item>
+          <label>Other</label>
+          <value>other</value>
+        </item>
+      </select1>
+      <input ref="/coverage_survey/basics/village_vacci_zone2_other">
+        <label>Specify other.</label>
+      </input>
+      <select1 ref="/coverage_survey/basics/village_vacci_zone3">
+        <label>A4. Name of the village/block</label>
+        <item>
+          <label>Don Bosco</label>
+          <value>1</value>
+        </item>
+        <item>
+          <label>Sharikat</label>
+          <value>2</value>
+        </item>
+        <item>
+          <label>Gumbo North</label>
+          <value>3</value>
+        </item>
+        <item>
+          <label>Gumbo South</label>
+          <value>4</value>
+        </item>
+        <item>
+          <label>Other</label>
+          <value>other</value>
+        </item>
+      </select1>
+      <input ref="/coverage_survey/basics/village_vacci_zone3_other">
+        <label>Specify other.</label>
+      </input>
+      <input ref="/coverage_survey/basics/hh_id">
+        <label>Assign a household ID number</label>
+      </input>
+      <input ref="/coverage_survey/basics/num_hh_members">
+        <label>A5. How many people live in the household</label>
+        <hint>Household: a group of people sleeping under the same roof and share meals every day for at least the previous 2 weeks.</hint>
+      </input>
+      <input ref="/coverage_survey/basics/num_toukul">
+        <label>A6. How many seperate huts are there within the living compound?</label>
+      </input>
+    </group>
+    <group appearance="field-list" ref="/coverage_survey/vacci_exp">
+      <label>vacci_exp</label>
+      <input ref="/coverage_survey/vacci_exp/vac_explain1">
+        <label>Read: In late July early August this year, MSF carried out a vaccination campaign against cholera in Juba. People had to go to vaccination sites in the community to receive the vaccine.</label>
+        <hint>show photo and empty vial</hint>
+      </input>
+      <input ref="/coverage_survey/vacci_exp/vac_explain2">
+        <label>Vaccines were delivered orally and available to all people over 1 year old</label>
+      </input>
+      <trigger ref="/coverage_survey/vacci_exp/vac_understood">
+        <label ref="jr:itext('/coverage_survey/vacci_exp/vac_understood:label')"/>
+      </trigger>
+      <input ref="/coverage_survey/vacci_exp/household_enumeration">
+        <label>Explain to the participant that you'd like to ask some questions about each member of the household, starting with the youngest:</label>
+      </input>
+    </group>
+    <group ref="/coverage_survey/hh_member">
+      <label>hh_members</label>
+      <repeat nodeset="/coverage_survey/hh_member">
+        <input ref="/coverage_survey/hh_member/age_yrs">
+          <label>B1. Age of household member</label>
+          <hint>in years</hint>
+        </input>
+        <select1 ref="/coverage_survey/hh_member/sex">
+          <label>B2. Sex of household member</label>
+          <item>
+            <label>male</label>
+            <value>1</value>
+          </item>
+          <item>
+            <label>female</label>
+            <value>2</value>
+          </item>
+        </select1>
+        <select1 ref="/coverage_survey/hh_member/ocv_in_2015">
+          <label>B3. Did he/she take this oral cholera vaccine during the campaign in Juba?</label>
+          <hint>(show the vial again and probe to confirm they are really talking about OCV)</hint>
+          <item>
+            <label>Yes</label>
+            <value>1</value>
+          </item>
+          <item>
+            <label>No</label>
+            <value>2</value>
+          </item>
+          <item>
+            <label>Don't Know</label>
+            <value>9</value>
+          </item>
+        </select1>
+        <select1 ref="/coverage_survey/hh_member/has_vac_card">
+          <label ref="jr:itext('/coverage_survey/hh_member/has_vac_card:label')"/>
+          <hint>Please try to get vaccination card. It is VERY important for the quality of data!</hint>
+          <item>
+            <label>Yes</label>
+            <value>1</value>
+          </item>
+          <item>
+            <label>No</label>
+            <value>2</value>
+          </item>
+        </select1>
+        <select1 ref="/coverage_survey/hh_member/spit_dose">
+          <label>B5. Did he/she spit out or vomit the vaccine?</label>
+          <item>
+            <label>Yes</label>
+            <value>1</value>
+          </item>
+          <item>
+            <label>No</label>
+            <value>2</value>
+          </item>
+          <item>
+            <label>Don't Know</label>
+            <value>9</value>
+          </item>
+        </select1>
+        <select1 ref="/coverage_survey/hh_member/adverse">
+          <label>B6. Did he/she experience any adverse effects after the vaccination?</label>
+          <item>
+            <label>Yes</label>
+            <value>1</value>
+          </item>
+          <item>
+            <label>No</label>
+            <value>2</value>
+          </item>
+          <item>
+            <label>Don't Know</label>
+            <value>9</value>
+          </item>
+        </select1>
+        <select ref="/coverage_survey/hh_member/adverse_type">
+          <label>B6b. Indicate adverse reaction:</label>
+          <item>
+            <label>fever</label>
+            <value>1</value>
+          </item>
+          <item>
+            <label>diarrhea</label>
+            <value>2</value>
+          </item>
+          <item>
+            <label>abdominal pain</label>
+            <value>3</value>
+          </item>
+          <item>
+            <label>nausea</label>
+            <value>4</value>
+          </item>
+          <item>
+            <label>vommiting</label>
+            <value>5</value>
+          </item>
+          <item>
+            <label>headache</label>
+            <value>6</value>
+          </item>
+          <item>
+            <label>general weakness</label>
+            <value>7</value>
+          </item>
+          <item>
+            <label>other</label>
+            <value>8</value>
+          </item>
+        </select>
+        <select1 ref="/coverage_survey/hh_member/adverse_hf">
+          <label>B7c. Did he/she consult go to a health facility because of the adverse reaction?</label>
+          <item>
+            <label>Yes</label>
+            <value>1</value>
+          </item>
+          <item>
+            <label>No</label>
+            <value>2</value>
+          </item>
+          <item>
+            <label>Don't Know</label>
+            <value>9</value>
+          </item>
+        </select1>
+        <select1 ref="/coverage_survey/hh_member/reason_novx">
+          <label>B8. Reason for not taking the vaccine</label>
+          <item>
+            <label>Not aware of the vaccination campaign</label>
+            <value>1</value>
+          </item>
+          <item>
+            <label>Thought he/she wasn't eligible</label>
+            <value>2</value>
+          </item>
+          <item>
+            <label>Did not know the date of the campaign</label>
+            <value>3</value>
+          </item>
+          <item>
+            <label>Did not know the location of the vaccination sites</label>
+            <value>4</value>
+          </item>
+          <item>
+            <label>Refusal because of tradition</label>
+            <value>5</value>
+          </item>
+          <item>
+            <label>Refusal because of religious beliefs</label>
+            <value>6</value>
+          </item>
+          <item>
+            <label>Belief that the vaccination is dangerous</label>
+            <value>7</value>
+          </item>
+          <item>
+            <label>Wait considered too long</label>
+            <value>8</value>
+          </item>
+          <item>
+            <label>Vaccination site deemed too far</label>
+            <value>9</value>
+          </item>
+          <item>
+            <label>There was not enough vaccine in the vaccination site</label>
+            <value>10</value>
+          </item>
+          <item>
+            <label>Absent during the campaign</label>
+            <value>11</value>
+          </item>
+          <item>
+            <label>Did not have time</label>
+            <value>12</value>
+          </item>
+          <item>
+            <label>Was ill during the vaccination campaign</label>
+            <value>13</value>
+          </item>
+          <item>
+            <label>Bad experiences with other vaccines in the past</label>
+            <value>14</value>
+          </item>
+          <item>
+            <label>Hospitalized at the time of the vaccination campaign</label>
+            <value>15</value>
+          </item>
+          <item>
+            <label>The vaccinator refused to give the person vaccine</label>
+            <value>16</value>
+          </item>
+          <item>
+            <label>Decided not to get vaccinated because she was pregnant</label>
+            <value>17</value>
+          </item>
+          <item>
+            <label>Taste is bad</label>
+            <value>18</value>
+          </item>
+          <item>
+            <label>No explanation</label>
+            <value>19</value>
+          </item>
+          <item>
+            <label>Other</label>
+            <value>20</value>
+          </item>
+        </select1>
+      </repeat>
+    </group>
+    <input ref="/coverage_survey/note_end">
+      <label>End the interview and thank the participant for his or her time.</label>
+    </input>
+    <input ref="/coverage_survey/visit_comments">
+      <label>Enter any comments about visit</label>
+    </input>
+    <input ref="/coverage_survey/gps">
+      <label>Please stand outside front door and capture GPS point of household</label>
+      <hint>GPS coordinates can only be collected when outside.</hint>
+    </input>
+  </h:body>
+</h:html>
